@@ -137,13 +137,15 @@ def find_wband_cols(av,model,filetype):
 		# M standards avaliable for 0.5 subtypes, but only for Ms
             if 'M0' in spt or 'M1' in spt or 'M2' in spt or 'M3' in spt or 'M4' in spt or 'M6' in spt or 'M9' in spt:
                 spt = model['SpT'][0:4]
+                print(spt)
                 filter_mags = wband_sim.calc_mags(spt,av,filetype)
                 h_2mass_app = filter_mags[4]
-                h_cfht_app = calc_h(h_2mass_app,spt,av,tl_d,filetype)
+                h_cfht_app = calc_h(h_2mass_app,spt,av,tl_d,filetype,filter_mags[5])
             else:
+                print(spt)
                 filter_mags = wband_sim.calc_mags(spt,av,filetype)
                 h_2mass_app = filter_mags[4]
-                h_cfht_app = calc_h(h_2mass_app,spt,av,tl_d,filetype) 
+                h_cfht_app = calc_h(h_2mass_app,spt,av,tl_d,filetype,filter_mags[5]) 
 
     elif 'l17' in filetype or 'realfile' in filetype:
         
@@ -176,19 +178,19 @@ def find_wband_cols(av,model,filetype):
 
 # FUNCTION TO CALCULATE APPARENT MAGNITUDES OF BS MODEL OBJECTS AT THEIR SIMULATED DISTANCES
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-def calc_h(h2,spt,av,bs_d,typ):
+def calc_h(h2,spt,av,bs_d,typ,name):
 
     if 'l17' in typ or 'realfile' in typ:
         t = Table.read('simbad_l17_dist.txt',format='ascii',guess=False)
         for i in range(len(t)):
-            if spt in t['SpT'][i]:
+            if spt in it['SpT'][i]:
             #chosen_std = t['SpT'][i]
                 dist = t['Dist (pc)'][i]
                 h2 = t['Happ'][i]
     else:
         t = Table.read('simbad_dis.txt',format='ascii',guess=False)
         for i in range(len(t)):
-            if spt in t['SpT'][i]:
+            if t['Name'][i] in name:
                 chosen_std = t['SpT'][i]
                 dist = t['Dist(pc)'][i]
 
@@ -196,7 +198,6 @@ def calc_h(h2,spt,av,bs_d,typ):
     happ = app_mag(habs,bs_d,-av)
 
     return happ
-
 
 
 # FUNCTION TO CALCULATE INTRINISC ABS AND APP MAGS, AND CUSTOM FILTER MAGS
@@ -384,9 +385,9 @@ def create_young_pop(imf,a,difflen):
 def background_popQH():
 
     #check that this is correct model!
-    model = Table.read('V343_trilegal_KNB.txt',format='ascii')
+    model = Table.read('trilegal_files/taurus_trilegal_8835_KNB.txt',format='ascii')
     #bs_list = bs_list [0:400]
-    RANDAV = False
+    RANDAV = True
     NOSPT = True
 
     # CREATE BACKGROUND POPULATION USING TRILEGAL MODEL TABLE
@@ -735,12 +736,12 @@ def chisq_test():
 
 
 #histogram()
-#b = background_popQH()
+b = background_popQH()
 #y,tab = create_young_pop('kroupa')
 #young = mp_loop_single_wband_table(tab)
 #young = young_popQH(tab)
 #tab = find_leftover_pop()
 
 #dif = define_populations(True)
-#b.write('V343_w_mags2.txt',format='ascii')
+b.write('population_files/taurus_backg_kroupNBIMF_0-5Av_mult_stds.txt',format='ascii')
 #make_grid()

@@ -125,11 +125,17 @@ def calc_mags(spt,av,filetype):
 
         # FIND MATCHING SPECTRAL TYPE FOR BACKGROUND MODEL FILES
         if 'bs' in filetype or 'tl' in filetype:
-
+            possfiles = []
             sptfiletest = str('*' + str(spt) + '*.fits')
             for i in range(len(filenames)):
                 if fnmatch.fnmatch(str(filenames[i]),sptfiletest):
-                    chosenfile = filenames[i]
+                    possfiles.append(filenames[i])
+
+            # Pick a random option from the standards available
+
+            num = len(possfiles)
+            choice = np.random.randint(0,num) 
+            chosenfile = possfiles[choice]
 
             stan = fits.open(str(chosenfile))
             spectra = stan[0].data
@@ -202,7 +208,7 @@ def calc_mags(spt,av,filetype):
         #narrowmag2 = -2.5*np.log10(new_flux(obj[0],obj[1],0.0,0.0,onoff2,False)/new_flux(vega[0],vega[1],0.0,0.0,onoff2,False))
 
         if 'bs' in filetype or 'tl' in filetype:
-            return broadmagJ,cusmagW,broadmagH,broadmagK,happ
+            return broadmagJ,cusmagW,broadmagH,broadmagK,happ,chosenfile
         else:
             return broadmagJ,cusmagW,broadmagH,broadmagK
         
