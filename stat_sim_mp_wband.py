@@ -381,7 +381,7 @@ def create_young_pop(imf,a,difflen):
     return t
 
 # FUNCTION TO CALL MULTIPROCESSING LOOP FOR GENERATING BACKGROUND POPULATION
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 def background_popQH():
 
     #check that this is correct model!
@@ -736,12 +736,12 @@ def chisq_test():
 
 
 #histogram()
-b = background_popQH()
+#b = background_popQH()
 #y,tab = create_young_pop('kroupa')
 #young = mp_loop_single_wband_table(tab)
 #young = young_popQH(tab)
 #tab = find_leftover_pop()
 
 #dif = define_populations(True)
-b.write('population_files/taurus_backg_kroupNBIMF_0-5Av_mult_stds.txt',format='ascii')
+#b.write('population_files/taurus_backg_kroupNBIMF_0-5Av_mult_stds.txt',format='ascii')
 #make_grid()
